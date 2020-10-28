@@ -13,4 +13,16 @@
             </form>
         </div>
     {% endif %}
+
+    {% for post in posts %}
+        <div id="posts">
+            <h2>{{ post.username }}</h2>
+            <p>Edit</p>
+            <p>{{ post.content }}</p>
+            <p>{{ post.creation_datetime }}</p>
+            <p>{{ post.likes }}</p>
+            <p>Comment</p>
+        </div>
+    {% endfor %}
+    
 {% endblock %}

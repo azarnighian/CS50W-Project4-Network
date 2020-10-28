@@ -9,7 +9,9 @@ from .models import User, Posts
 import datetime
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {
+        "posts": Posts.objects.all()
+    })
 
 
 def new_post(request):
