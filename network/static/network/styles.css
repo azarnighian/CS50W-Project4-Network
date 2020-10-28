@@ -14,5 +14,14 @@ textarea {
 
 label {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 25px;
+}
+
+#posts h2 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.light_font_weight {
+    font-weight: 100;
 }

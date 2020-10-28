@@ -10,7 +10,7 @@ import datetime
 
 def index(request):
     return render(request, "network/index.html", {
-        "posts": Posts.objects.all()
+        "posts": Posts.objects.all().order_by('-creation_datetime')
     })
 
 

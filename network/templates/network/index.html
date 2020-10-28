@@ -19,9 +19,9 @@
             <h2>{{ post.username }}</h2>
             <p>Edit</p>
             <p>{{ post.content }}</p>
-            <p>{{ post.creation_datetime }}</p>
-            <p>{{ post.likes }}</p>
-            <p>Comment</p>
+            <p class="light_font_weight">{{ post.creation_datetime }}</p>
+            <p class="light_font_weight">Like {{ post.likes }}</p>
+            <p class="light_font_weight">Comment</p>
         </div>
     {% endfor %}
     
