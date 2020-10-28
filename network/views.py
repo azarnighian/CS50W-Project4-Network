@@ -4,11 +4,23 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Posts
 
+import datetime
 
 def index(request):
     return render(request, "network/index.html")
+
+
+def new_post(request):
+    username = request.user.username
+    content = request.POST["post"]
+    creation_datetime=datetime.datetime.now()
+    
+    Posts.objects.create(username=username, content=content,
+    creation_datetime=creation_datetime)
+
+    return HttpResponseRedirect(reverse("index"))
 
 
 def login_view(request):

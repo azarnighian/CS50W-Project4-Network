@@ -1,0 +1,18 @@
+#new_post {
+    border-style: solid;
+    border-width: .1px;
+
+    padding: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+    font-size: 20px;
+}
