@@ -16,7 +16,7 @@
 
     {% for post in posts %}
         <div id="posts">
-            <h2>{{ post.user.username }}</h2>
+            <a href="% url 'profile' post.user.username %}"><h2>{{ post.user.username }}</h2></a>
             <p>Edit</p>
             <p>{{ post.content }}</p>
             <p class="light_font_weight">{{ post.creation_datetime }}</p>

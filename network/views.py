@@ -15,7 +15,7 @@ def index(request):
 
 
 def new_post(request):
-    user = request.user    
+    user = request.user
     content = request.POST["post"]
     creation_datetime=datetime.datetime.now()
     
@@ -23,6 +23,11 @@ def new_post(request):
     creation_datetime=creation_datetime)
 
     return HttpResponseRedirect(reverse("index"))
+
+def profile(request, username):
+    return render(request, "network/profile.html", {
+        "user": User.objects.get(username=username)
+    })
 
 
 def login_view(request):
