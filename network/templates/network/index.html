@@ -16,7 +16,7 @@
 
     {% for post in posts %}
         <div id="posts">
-            <h2>{{ post.user.id }}</h2>
+            <h2>{{ post.user.username }}</h2>
             <p>Edit</p>
             <p>{{ post.content }}</p>
             <p class="light_font_weight">{{ post.creation_datetime }}</p>

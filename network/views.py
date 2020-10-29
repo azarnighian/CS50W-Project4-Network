@@ -15,7 +15,7 @@ def index(request):
 
 
 def new_post(request):
-    user = request.user
+    user = request.user    
     content = request.POST["post"]
     creation_datetime=datetime.datetime.now()
     
