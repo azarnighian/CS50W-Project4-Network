@@ -15,11 +15,11 @@ def index(request):
 
 
 def new_post(request):
-    username = request.user.username
+    user = request.user
     content = request.POST["post"]
     creation_datetime=datetime.datetime.now()
     
-    Posts.objects.create(username=username, content=content,
+    Posts.objects.create(user=user, content=content,
     creation_datetime=creation_datetime)
 
     return HttpResponseRedirect(reverse("index"))
