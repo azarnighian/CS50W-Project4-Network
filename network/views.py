@@ -25,8 +25,13 @@ def new_post(request):
     return HttpResponseRedirect(reverse("index"))
 
 def profile(request, username):
+    user = User.objects.get(username=username)
+
     return render(request, "network/profile.html", {
-        "user": User.objects.get(username=username)
+        "user": user,
+        "followers_count": user.followers.count(),
+        "following_count": user.following.count(),
+        "posts": user.posts.all().order_by('-creation_datetime')
     })
 
 

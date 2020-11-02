@@ -3,8 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    followers = models.ManyToManyField('self', blank=True)
-    following = models.ManyToManyField('self', blank=True)
+    followers = models.ManyToManyField('self')
+    following = models.ManyToManyField('self')
 
 class Posts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")

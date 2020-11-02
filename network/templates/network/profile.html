@@ -2,6 +2,26 @@
 
 {% block body %}
 
-<h1>{{ user }}</h1>
+<h1>{{ user }}</h1><br>
+
+<div>
+    <h2>Followers and Following:</h2>
+    <p>{{ user }} has {{ followers_count }} followers</p>
+    <p>{{ user }} follows {{ following_count }} people</p>
+</div>
+
+<div>
+    <h2>Posts:</h2>
+    {% for post in posts %}
+        <div id="posts">        
+            <p>Edit</p>
+            <p>{{ post.content }}</p>
+            <p class="light_font_weight">{{ post.creation_datetime }}</p>
+            <p class="light_font_weight">Like {{ post.likes }}</p>
+            <p class="light_font_weight">Comment</p>
+        </div>
+    {% endfor %}
+</div>
+
 
 {% endblock %}
