@@ -24,15 +24,44 @@ def new_post(request):
 
     return HttpResponseRedirect(reverse("index"))
 
+
 def profile(request, username):
-    user = User.objects.get(username=username)
+    this_user = User.objects.get(username=username)
 
     return render(request, "network/profile.html", {
-        "user": user,
-        "followers_count": user.followers.count(),
-        "following_count": user.following.count(),
-        "posts": user.posts.all().order_by('-creation_datetime')
+        "this_user": this_user,
+        "followers_count": this_user.followers.count(),
+        "following_count": this_user.following.count(),
+        "posts": this_user.posts.all().order_by('-creation_datetime')
     })
+
+
+def follow(request, this_username):
+    this_user = User.objects.get(username=this_username)
+
+    request.user.following.add(this_user) 
+    this_user.followers.add(request.user)
+
+    print("'request.user.followers' = ", request.user.followers.all())
+    print("'request.user.following' = ", request.user.following.all())
+    print("'this_user.followers' = ", this_user.followers.all())
+    print("'this_user.following' = ", this_user.following.all())
+
+    return HttpResponseRedirect(reverse("profile", args=[this_username]))
+
+
+def unfollow(request, this_username): 
+    this_user = User.objects.get(username=this_username)
+
+    request.user.following.remove(this_user)    
+    this_user.followers.remove(request.user)
+
+    print("'request.user.followers' = ", request.user.followers.all())
+    print("'request.user.following' = ", request.user.following.all())
+    print("'this_user.followers' = ", this_user.followers.all())
+    print("'this_user.following' = ", this_user.following.all())
+
+    return HttpResponseRedirect(reverse("profile", args=[this_username]))
 
 
 def login_view(request):

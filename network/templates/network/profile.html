@@ -2,12 +2,20 @@
 
 {% block body %}
 
-<h1>{{ user }}</h1><br>
+<h1>{{ this_user }}</h1><br>
+
+{% if user.is_authenticated and user.username != this_user.username %}    
+    {% if this_user in user.following %}
+        <a href="{% url 'unfollow' this_user.username %}">Unfollow</a>
+    {% else %}
+        <a href="{% url 'follow' this_user.username %}">Follow</a> 
+    {% endif %}           
+{% endif %}
 
 <div>
     <h2>Followers and Following:</h2>
-    <p>{{ user }} has {{ followers_count }} followers</p>
-    <p>{{ user }} follows {{ following_count }} people</p>
+    <p>{{ this_user.username }} has {{ followers_count }} followers</p>
+    <p>{{ this_user.username }} follows {{ following_count }} people</p>
 </div>
 
 <div>
@@ -22,6 +30,5 @@
         </div>
     {% endfor %}
 </div>
-
 
 {% endblock %}
