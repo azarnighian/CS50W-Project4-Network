@@ -3,14 +3,15 @@ from django.db import models
 
 
 class User(AbstractUser):
-    followers = models.ManyToManyField('self')
-    following = models.ManyToManyField('self')
+    followers = models.ManyToManyField('self', related_name="following", symmetrical=False)
+
 
 class Posts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     content = models.TextField()
     creation_datetime = models.DateTimeField() 
     likes = models.IntegerField(default=0)
+                    
 
 
                     # After every change:

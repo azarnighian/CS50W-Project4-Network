@@ -26,7 +26,7 @@ def new_post(request):
 
 
 def profile(request, username):
-    this_user = User.objects.get(username=username)
+    this_user = User.objects.get(username=username)    
 
     return render(request, "network/profile.html", {
         "this_user": this_user,
