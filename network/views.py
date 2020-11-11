@@ -15,14 +15,46 @@ def index(request):
 
 
 def new_post(request):
-    username = request.user.username
+    user = request.user
     content = request.POST["post"]
     creation_datetime=datetime.datetime.now()
     
-    Posts.objects.create(username=username, content=content,
-    creation_datetime=creation_datetime)
+    Posts.objects.create(user=user, content=content,
+                         creation_datetime=creation_datetime)
 
     return HttpResponseRedirect(reverse("index"))
+
+
+def profile(request, username):
+    this_user = User.objects.get(username=username) 
+    following_list = (request.user.following.all() if request.user.is_authenticated 
+                      else [])    
+
+    return render(request, "network/profile.html", {
+        "following_list": following_list,
+        "this_user": this_user,
+        "followers_count": this_user.followers.count(),
+        "following_count": this_user.following.count(),
+        "posts": this_user.posts.all().order_by('-creation_datetime')
+    })
+
+
+def follow(request, this_username):
+    this_user = User.objects.get(username=this_username)
+
+    request.user.following.add(this_user) 
+    this_user.followers.add(request.user)    
+
+    return HttpResponseRedirect(reverse("profile", args=[this_username]))
+
+
+def unfollow(request, this_username): 
+    this_user = User.objects.get(username=this_username)
+
+    request.user.following.remove(this_user)    
+    this_user.followers.remove(request.user)    
+
+    return HttpResponseRedirect(reverse("profile", args=[this_username]))
 
 
 def login_view(request):
