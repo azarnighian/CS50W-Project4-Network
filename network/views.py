@@ -57,6 +57,14 @@ def unfollow(request, this_username):
     return HttpResponseRedirect(reverse("profile", args=[this_username]))
 
 
+def following(request):
+    following_list = request.user.following.all()
+
+    return render(request, "network/following.html", {
+        "posts": Posts.objects.filter(user__in=following_list).order_by('-creation_datetime')
+    })
+
+
 def login_view(request):
     if request.method == "POST":
 
