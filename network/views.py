@@ -20,15 +20,18 @@ def new_post(request):
     creation_datetime=datetime.datetime.now()
     
     Posts.objects.create(user=user, content=content,
-    creation_datetime=creation_datetime)
+                         creation_datetime=creation_datetime)
 
     return HttpResponseRedirect(reverse("index"))
 
 
 def profile(request, username):
-    this_user = User.objects.get(username=username)    
+    this_user = User.objects.get(username=username) 
+    following_list = (request.user.following.all() if request.user.is_authenticated 
+                      else [])    
 
     return render(request, "network/profile.html", {
+        "following_list": following_list,
         "this_user": this_user,
         "followers_count": this_user.followers.count(),
         "following_count": this_user.following.count(),
@@ -40,12 +43,7 @@ def follow(request, this_username):
     this_user = User.objects.get(username=this_username)
 
     request.user.following.add(this_user) 
-    this_user.followers.add(request.user)
-
-    print("'request.user.followers' = ", request.user.followers.all())
-    print("'request.user.following' = ", request.user.following.all())
-    print("'this_user.followers' = ", this_user.followers.all())
-    print("'this_user.following' = ", this_user.following.all())
+    this_user.followers.add(request.user)    
 
     return HttpResponseRedirect(reverse("profile", args=[this_username]))
 
@@ -54,12 +52,7 @@ def unfollow(request, this_username):
     this_user = User.objects.get(username=this_username)
 
     request.user.following.remove(this_user)    
-    this_user.followers.remove(request.user)
-
-    print("'request.user.followers' = ", request.user.followers.all())
-    print("'request.user.following' = ", request.user.following.all())
-    print("'this_user.followers' = ", this_user.followers.all())
-    print("'this_user.following' = ", this_user.following.all())
+    this_user.followers.remove(request.user)    
 
     return HttpResponseRedirect(reverse("profile", args=[this_username]))
 

@@ -5,7 +5,7 @@
 <h1>{{ this_user }}</h1><br>
 
 {% if user.is_authenticated and user.username != this_user.username %}    
-    {% if this_user in user.following %}
+    {% if this_user in following_list %}
         <a href="{% url 'unfollow' this_user.username %}">Unfollow</a>
     {% else %}
         <a href="{% url 'follow' this_user.username %}">Follow</a> 
