@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -9,9 +10,30 @@ from .models import User, Posts
 import datetime
 
 def index(request):
+    posts = Posts.objects.all().order_by('-creation_datetime')
+    post_paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = post_paginator.get_page(page_number)
+
     return render(request, "network/index.html", {
-        "posts": Posts.objects.all().order_by('-creation_datetime')
+        "page_obj": page_obj,
+        "page_name": "index"
     })
+
+
+def following(request):
+    following_list = request.user.following.all()
+    posts = Posts.objects.filter(user__in=following_list).order_by('-creation_datetime')
+    post_paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = post_paginator.get_page(page_number)
+
+    return render(request, "network/index.html", {
+        "page_obj": page_obj,
+        "page_name": "following"
+    })     
 
 
 def new_post(request):
@@ -54,15 +76,7 @@ def unfollow(request, this_username):
     request.user.following.remove(this_user)    
     this_user.followers.remove(request.user)    
 
-    return HttpResponseRedirect(reverse("profile", args=[this_username]))
-
-
-def following(request):
-    following_list = request.user.following.all()
-
-    return render(request, "network/following.html", {
-        "posts": Posts.objects.filter(user__in=following_list).order_by('-creation_datetime')
-    })
+    return HttpResponseRedirect(reverse("profile", args=[this_username]))   
 
 
 def login_view(request):
