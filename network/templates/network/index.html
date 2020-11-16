@@ -1,4 +1,9 @@
 {% extends "network/layout.html" %}
+{% load static %}
+
+{% block js %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}
 
 {% block body %}
     {% if page_name == "index" %}
@@ -19,10 +24,12 @@
     {% endif %}
                     
     {% for post in page_obj.object_list %}
-        <div id="posts">
+        <div class="posts">
             <a href="{% url 'profile' post.user.username %}"><h2>{{ post.user.username }}</h2></a>
-            <p>Edit</p>
-            <p>{{ post.content }}</p>
+            {% if post.user == user %}
+                <button type="button">Edit</button>
+            {% endif %}
+            <div class="content">{{ post.content }}</div>            
             <p class="light_font_weight">{{ post.creation_datetime }}</p>
             <p class="light_font_weight">Like {{ post.likes }}</p>
             <p class="light_font_weight">Comment</p>
