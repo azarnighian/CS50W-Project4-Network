@@ -1,9 +1,12 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
 from django.db import IntegrityError
+from django.http import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Posts
 
@@ -78,6 +81,18 @@ def unfollow(request, this_username):
 
     return HttpResponseRedirect(reverse("profile", args=[this_username]))   
 
+@csrf_exempt
+def save_edit(request, post_id):
+    try:
+        this_post = Posts.objects.get(id=post_id)
+    except Posts.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+            
+    data = json.loads(request.body)
+    this_post.content = data["content"]
+    this_post.save()
+
+    return HttpResponse(status=200)
 
 def login_view(request):
     if request.method == "POST":
