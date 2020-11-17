@@ -25,9 +25,15 @@
     <div>
         <h2>Posts:</h2>
         {% for post in posts %}
-            <div id="posts">        
-                <p>Edit</p>
-                <p>{{ post.content }}</p>
+            <div class="posts">        
+                {% if post.user == user %}
+                    <button class="edit_button" type="button">Edit</button>
+                {% endif %}
+                <div class="content">{{ post.content }}</div>
+                {% if post.user == user %}
+                    <button class="save_button" type="button">Save</button>
+                    <div class="post_id">{{post.id}}</div>
+                {% endif %}
                 <p class="light_font_weight">{{ post.creation_datetime }}</p>
                 <p class="light_font_weight">Like {{ post.likes }}</p>
                 <p class="light_font_weight">Comment</p>

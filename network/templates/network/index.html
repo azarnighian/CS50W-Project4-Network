@@ -27,9 +27,13 @@
         <div class="posts">
             <a href="{% url 'profile' post.user.username %}"><h2>{{ post.user.username }}</h2></a>
             {% if post.user == user %}
-                <button type="button">Edit</button>
+                <button class="edit_button" type="button">Edit</button>
             {% endif %}
-            <div class="content">{{ post.content }}</div>            
+            <div class="content">{{ post.content }}</div> 
+            {% if post.user == user %}
+                <button class="save_button" type="button">Save</button>
+                <div class="post_id">{{post.id}}</div>
+            {% endif %}
             <p class="light_font_weight">{{ post.creation_datetime }}</p>
             <p class="light_font_weight">Like {{ post.likes }}</p>
             <p class="light_font_weight">Comment</p>

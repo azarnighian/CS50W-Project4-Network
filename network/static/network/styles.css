@@ -27,6 +27,14 @@ label {
     font-weight: bold;
 }
 
+.save_button {
+    display: none;
+}
+
+.post_id {
+    display: none;
+}
+
 .light_font_weight {
     font-weight: 100;
 }
