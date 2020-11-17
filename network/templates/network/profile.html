@@ -35,8 +35,10 @@
                     <div class="post_id">{{post.id}}</div>
                 {% endif %}
                 <p class="light_font_weight">{{ post.creation_datetime }}</p>
-                <p class="light_font_weight">Like {{ post.likes }}</p>
-                <p class="light_font_weight">Comment</p>
+                {% if user.is_authenticated %}
+                    <button class="like_button" type="button">Like</button>
+                {% endif %}
+                <p class="light_font_weight">Likes: {{ post.likes }}</p>
             </div>
         {% endfor %}
     </div>
