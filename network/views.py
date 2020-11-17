@@ -94,6 +94,21 @@ def save_edit(request, post_id):
 
     return HttpResponse(status=200)
 
+
+@csrf_exempt
+def like(request, post_id):
+    try:
+        this_post = Posts.objects.get(id=post_id)
+    except Posts.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+            
+    data = json.loads(request.body)
+    this_post.likes += data["like_increase"]
+    this_post.save()
+
+    return HttpResponse(status=200)
+
+
 def login_view(request):
     if request.method == "POST":
 

@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.save_button').forEach(function (button) {
         button.onclick = save_edit;
     });
+    document.querySelectorAll('.like_button').forEach(function (button) {
+        button.onclick = like;
+    });
 });
 
 function edit() {   
@@ -21,13 +24,14 @@ function edit() {
     save_button.style.display = "block";
 }
 
+
 function save_edit() {       
     let post_id = post_div.querySelector('.post_id').innerHTML;
 
     let textarea = document.querySelector(".posts textarea");
     let updated_content = textarea.value;
 
-    // change model content
+    // change model object content
     fetch(`/save_edit/${post_id}`, {
         method: 'PUT',
         body: JSON.stringify({
@@ -44,4 +48,22 @@ function save_edit() {
 
     // hide save button
     save_button.style.display = "none";
+}
+
+
+function like() {
+    let post_div = this.parentElement;
+    let post_id = post_div.querySelector('.post_id').innerHTML;
+
+    // change like count of model object
+    fetch(`/like/${post_id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            like_increase: 1
+        })
+    })
+
+    let like_count = post_div.querySelector('.likes');
+    let new_like_count = parseInt(like_count.innerHTML, 10) + 1
+    like_count.innerHTML = new_like_count;
 }

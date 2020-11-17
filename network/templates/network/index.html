@@ -31,14 +31,15 @@
             {% endif %}            
             <div class="content">{{ post.content }}</div> 
             {% if post.user == user %}
-                <button class="save_button" type="button">Save</button>
-                <div class="post_id">{{post.id}}</div>
+                <button class="save_button" type="button">Save</button>                
             {% endif %}
             <p class="light_font_weight">{{ post.creation_datetime }}</p>
             {% if user.is_authenticated %}
                 <button class="like_button" type="button">Like</button>
+                <div class="post_id">{{post.id}}</div>
             {% endif %}
-            <p class="light_font_weight">Likes: {{ post.likes }}</p>
+            <p class="light_font_weight">Likes: </p>
+            <p class="likes light_font_weight">{{ post.likes }}</p>            
         </div>
     {% endfor %}
 
