@@ -31,12 +31,19 @@
                 {% endif %}
                 <div class="content">{{ post.content }}</div>
                 {% if post.user == user %}
-                    <button class="save_button" type="button">Save</button>
-                    <div class="post_id">{{post.id}}</div>
+                    <button class="save_button" type="button">Save</button>                    
                 {% endif %}
                 <p class="light_font_weight">{{ post.creation_datetime }}</p>
-                <p class="light_font_weight">Like {{ post.likes }}</p>
-                <p class="light_font_weight">Comment</p>
+                {% if user.is_authenticated %}
+                    {% if post in liked_posts %}
+                        <button class="like_button" type="button">Unlike</button>
+                    {% else %}
+                        <button class="like_button" type="button">Like</button>
+                    {% endif %}
+                    <div class="post_id">{{post.id}}</div>
+                {% endif %}
+                <p class="light_font_weight">Likes: </p>
+                <p class="likes light_font_weight">{{ post.likes }}</p>
             </div>
         {% endfor %}
     </div>
