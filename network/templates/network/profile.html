@@ -35,7 +35,11 @@
                 {% endif %}
                 <p class="light_font_weight">{{ post.creation_datetime }}</p>
                 {% if user.is_authenticated %}
-                    <button class="like_button" type="button">Like</button>
+                    {% if post in liked_posts %}
+                        <button class="like_button" type="button">Unlike</button>
+                    {% else %}
+                        <button class="like_button" type="button">Like</button>
+                    {% endif %}
                     <div class="post_id">{{post.id}}</div>
                 {% endif %}
                 <p class="light_font_weight">Likes: </p>

@@ -19,9 +19,13 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = post_paginator.get_page(page_number)
 
+    liked_posts = (request.user.liked_posts.all() if request.user.is_authenticated 
+                  else [])
+
     return render(request, "network/index.html", {
         "page_obj": page_obj,
-        "page_name": "index"
+        "page_name": "index",
+        "liked_posts": liked_posts
     })
 
 
@@ -53,14 +57,17 @@ def new_post(request):
 def profile(request, username):
     this_user = User.objects.get(username=username) 
     following_list = (request.user.following.all() if request.user.is_authenticated 
-                      else [])    
+                      else [])
+    liked_posts = (request.user.liked_posts.all() if request.user.is_authenticated 
+                  else [])                          
 
     return render(request, "network/profile.html", {
         "following_list": following_list,
         "this_user": this_user,
         "followers_count": this_user.followers.count(),
         "following_count": this_user.following.count(),
-        "posts": this_user.posts.all().order_by('-creation_datetime')
+        "posts": this_user.posts.all().order_by('-creation_datetime'),
+        "liked_posts": liked_posts
     })
 
 
@@ -96,14 +103,19 @@ def save_edit(request, post_id):
 
 
 @csrf_exempt
-def like(request, post_id):
+def like(request, post_id, l_or_u):
     try:
         this_post = Posts.objects.get(id=post_id)
     except Posts.DoesNotExist:
         return JsonResponse({"error": "Post not found."}, status=404)
             
     data = json.loads(request.body)
-    this_post.likes += data["like_increase"]
+    if l_or_u == "Like":    
+        this_post.likes += data["like_change"]
+        request.user.liked_posts.add(this_post) 
+    else:
+        this_post.likes -= data["like_change"] 
+        request.user.liked_posts.remove(this_post)        
     this_post.save()
 
     return HttpResponse(status=200)

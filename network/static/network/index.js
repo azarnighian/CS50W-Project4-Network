@@ -31,7 +31,7 @@ function save_edit() {
     let textarea = document.querySelector(".posts textarea");
     let updated_content = textarea.value;
 
-    // change model object content
+    // change model instance content
     fetch(`/save_edit/${post_id}`, {
         method: 'PUT',
         body: JSON.stringify({
@@ -54,16 +54,27 @@ function save_edit() {
 function like() {
     let post_div = this.parentElement;
     let post_id = post_div.querySelector('.post_id').innerHTML;
+    let like_button = post_div.querySelector('.like_button');
+    let l_or_u = like_button.innerHTML;
 
-    // change like count of model object
-    fetch(`/like/${post_id}`, {
+    // change like count of model instance
+    fetch(`/like/${post_id}/${l_or_u}`, {
         method: 'PUT',
         body: JSON.stringify({
-            like_increase: 1
+            like_change: 1
         })
     })
 
+    // change like count on current page, and change like to unlike, or vice versa
     let like_count = post_div.querySelector('.likes');
-    let new_like_count = parseInt(like_count.innerHTML, 10) + 1
+        
+    if (l_or_u === "Like") {
+        var new_like_count = parseInt(like_count.innerHTML, 10) + 1;
+        like_button.innerHTML = "Unlike"
+    }
+    else {
+        var new_like_count = parseInt(like_count.innerHTML, 10) - 1;
+        like_button.innerHTML = "Like"
+    }
     like_count.innerHTML = new_like_count;
 }
